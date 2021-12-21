@@ -1,0 +1,70 @@
+﻿<UserControl x:Class="HostManager.Views.EditRecordDialog"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:vm="clr-namespace:HostManager.ViewModels"
+             xmlns:prism="http://prismlibrary.com/"
+             xmlns:hc="https://handyorg.github.io/handycontrol"
+             xmlns:fa="clr-namespace:Meziantou.WpfFontAwesome;assembly=Meziantou.WpfFontAwesome"
+             mc:Ignorable="d" d:DataContext="{d:DesignInstance vm:EditRecordDialogViewModel}">
+    <prism:Dialog.WindowStyle>
+        <Style TargetType="Window" BasedOn="{StaticResource {x:Type Window}}">
+            <Setter Property="prism:Dialog.WindowStartupLocation" Value="CenterScreen" />
+            <Setter Property="ResizeMode" Value="NoResize" />
+            <Setter Property="SizeToContent" Value="WidthAndHeight" />
+            <Setter Property="Title" Value="{Binding Title}" />
+        </Style>
+    </prism:Dialog.WindowStyle>
+
+    <Grid Width="400"
+          Margin="{StaticResource Gap.Thickness}">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="{StaticResource Gap.GridLength}" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="{StaticResource Gap.GridLength}" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+
+        <TextBox Grid.Row="0"
+                 hc:InfoElement.Title="{DynamicResource String.HostName}"
+                 Style="{StaticResource TextBox.Style}"
+                 Text="{Binding HostName, UpdateSourceTrigger=PropertyChanged}" />
+
+        <Grid Grid.Row="2">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="Auto" />
+            </Grid.ColumnDefinitions>
+
+            <TextBox Grid.Column="0"
+                     hc:InfoElement.Title="{DynamicResource String.HostAddress}"
+                     Style="{StaticResource TextBox.Style}"
+                     Text="{Binding HostAddress,
+                                    Converter={StaticResource IPAddressConverter},
+                                    UpdateSourceTrigger=LostFocus,
+                                    IsAsync=True}"
+                     IsEnabled="{Binding CanEditAddress}" />
+
+            <Button Grid.Column="1"
+                    ToolTip="{DynamicResource String.AutoResolve}"
+                    Command="{Binding CommandAutoResolve}"
+                    IsEnabled="{Binding CanAutoResolve}"
+                    Width="{StaticResource Element.Size}"
+                    Height="{StaticResource Element.Size}"
+                    VerticalAlignment="Bottom">
+                <fa:FontAwesomeIcon SolidIcon="SyncAlt" />
+            </Button>
+        </Grid>
+
+        <Button Grid.Row="4"
+                Style="{StaticResource Button.General.Success.Style}"
+                Content="{DynamicResource String.Apply}"
+                Command="{Binding CommandApply}"
+                IsEnabled="{Binding CanApply}"
+                HorizontalAlignment="Center" />
+
+    </Grid>
+
+</UserControl>

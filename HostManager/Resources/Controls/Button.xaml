@@ -1,0 +1,26 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <ResourceDictionary.MergedDictionaries>
+        <ResourceDictionary Source="/Resources/Core/Theme.xaml" />
+        <ResourceDictionary Source="/Resources/Core/Constants.xaml" />
+    </ResourceDictionary.MergedDictionaries>
+
+    <!-- #region General Button -->
+
+    <Style x:Key="Button.General.Success.Style" TargetType="{x:Type Button}" BasedOn="{StaticResource ButtonSuccess}">
+        <Setter Property="Width" Value="{StaticResource Element.Tripple.Size}" />
+        <Setter Property="Height" Value="{StaticResource Element.Size}" />
+    </Style>
+
+    <!-- #endregion -->
+    
+    <!-- #region Button in Toolbar -->
+
+    <Style x:Key="Button.Toolbar.Style" TargetType="{x:Type Button}" BasedOn="{StaticResource {x:Type Button}}">
+        <Setter Property="Width" Value="{StaticResource Element.Size}" />
+        <Setter Property="Height" Value="{StaticResource Element.Size}" />
+    </Style>
+
+    <!-- #endregion -->
+
+</ResourceDictionary>

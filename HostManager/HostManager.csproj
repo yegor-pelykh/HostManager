@@ -1,0 +1,81 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net5.0-windows</TargetFramework>
+    <UseWPF>true</UseWPF>
+    <StartupObject></StartupObject>
+    <ApplicationIcon>AppIcon.ico</ApplicationIcon>
+    <ApplicationManifest>app.manifest</ApplicationManifest>
+    <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
+    <AppendRuntimeIdentifierToOutputPath>false</AppendRuntimeIdentifierToOutputPath>
+    <BaseOutputPath>bin\$(Configuration)</BaseOutputPath>
+    <ProduceReferenceAssembly>False</ProduceReferenceAssembly>
+    <SignAssembly>False</SignAssembly>
+    <Authors>YegorPelykh</Authors>
+    <Description>Application for easy management of system mappings of domain names to IP addresses.</Description>
+    <Copyright>© 2021 Yegor Pelykh</Copyright>
+    <PackageProjectUrl>https://github.com/yegor-pelykh/HostManager</PackageProjectUrl>
+    <PackageIcon>AppIcon.png</PackageIcon>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
+    <RepositoryUrl>https://github.com/yegor-pelykh/HostManager</RepositoryUrl>
+    <PackageTags>host;manager;hosts;domain;ip;address;mappings;system</PackageTags>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <DebugType>none</DebugType>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Content Include="AppIcon.ico" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="DnsClient" Version="1.5.0" />
+    <PackageReference Include="HandyControl" Version="3.3.0" />
+    <PackageReference Include="Meziantou.WpfFontAwesome" Version="5.15.4" />
+    <PackageReference Include="Prism.Unity" Version="8.1.97" />
+    <PackageReference Include="System.Drawing.Common" Version="6.0.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Page Update="L10n\Strings\RU.xaml">
+      <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Resources\Controls\ComboBox.xaml">
+      <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Resources\Controls\TextBox.xaml">
+      <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Resources\Controls\Button.xaml">
+      <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Resources\Core\Theme.xaml">
+      <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Views\EditRecordDialog.xaml">
+      <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Views\ConfigurationDialog.xaml">
+      <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
+      <SubType>Designer</SubType>
+    </Page>
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="..\AppIcon.png">
+      <Pack>True</Pack>
+      <PackagePath>\</PackagePath>
+    </None>
+    <None Include="..\README.md">
+      <Pack>True</Pack>
+      <PackagePath>\</PackagePath>
+    </None>
+  </ItemGroup>
+
+</Project>

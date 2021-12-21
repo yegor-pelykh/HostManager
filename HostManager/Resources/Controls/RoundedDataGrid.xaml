@@ -1,0 +1,156 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:controls="clr-namespace:HostManager.Controls">
+    <ResourceDictionary.MergedDictionaries>
+        <ResourceDictionary Source="/Resources/Core/Theme.xaml" />
+        <ResourceDictionary Source="/Resources/Core/Constants.xaml" />
+    </ResourceDictionary.MergedDictionaries>
+
+    <!-- #region Base -->
+
+    <Style x:Key="RoundedDataGrid.Style" TargetType="{x:Type controls:RoundedDataGrid}" BasedOn="{StaticResource {x:Type DataGrid}}">
+        <Setter Property="AutoGenerateColumns" Value="False" />
+        <Setter Property="CanUserAddRows" Value="False" />
+        <Setter Property="CanUserDeleteRows" Value="False" />
+        <Setter Property="CanUserReorderColumns" Value="False" />
+        <Setter Property="CanUserResizeColumns" Value="False" />
+        <Setter Property="CanUserResizeRows" Value="False" />
+        <Setter Property="CanUserSortColumns" Value="False" />
+        <Setter Property="ColumnHeaderHeight" Value="{StaticResource Element.Size}" />
+        <Setter Property="GridLinesVisibility" Value="None" />
+        <Setter Property="HeadersVisibility" Value="Column" />
+        <Setter Property="RowHeight" Value="{StaticResource Element.Size}" />
+        <Setter Property="SelectionMode" Value="Single" />
+        <Setter Property="SelectionUnit" Value="FullRow" />
+        <Setter Property="CornerRadius" Value="4" />
+    </Style>
+    
+    <!-- #endregion -->
+
+    <!-- #region RoundedDataGrid for Hosts -->
+
+    <Style x:Key="RoundedDataGrid.Hosts.HostColumn.HeaderStyle" TargetType="{x:Type DataGridColumnHeader}" BasedOn="{StaticResource DataGridColumnHeaderStyle}">
+        <Setter Property="HorizontalContentAlignment" Value="Right" />
+        <Setter Property="VerticalContentAlignment" Value="Center" />
+    </Style>
+
+    <Style x:Key="RoundedDataGrid.Hosts.HostColumn.ElementStyle" TargetType="{x:Type TextBlock}" BasedOn="{StaticResource DataGridTextColumnStyle}">
+        <Setter Property="HorizontalAlignment" Value="Right" />
+        <Setter Property="VerticalAlignment" Value="Center" />
+    </Style>
+
+    <Style x:Key="RoundedDataGrid.Hosts.AddressColumn.HeaderStyle" TargetType="{x:Type DataGridColumnHeader}" BasedOn="{StaticResource DataGridColumnHeaderStyle}">
+        <Setter Property="HorizontalContentAlignment" Value="Left" />
+        <Setter Property="VerticalContentAlignment" Value="Center" />
+    </Style>
+
+    <Style x:Key="RoundedDataGrid.Hosts.AddressColumn.ElementStyle" TargetType="{x:Type TextBlock}" BasedOn="{StaticResource DataGridTextColumnStyle}">
+        <Setter Property="HorizontalAlignment" Value="Left" />
+        <Setter Property="VerticalAlignment" Value="Center" />
+    </Style>
+
+    <Style x:Key="RoundedDataGrid.Hosts.CellStyle" TargetType="{x:Type DataGridCell}" BasedOn="{StaticResource DataGridCellStyle}">
+        <Setter Property="BorderThickness" Value="0" />
+        <Setter Property="FocusVisualStyle" Value="{x:Null}" />
+        <Setter Property="Padding" Value="5" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type DataGridCell}">
+                    <Border BorderBrush="{TemplateBinding BorderBrush}"
+                            BorderThickness="{TemplateBinding BorderThickness}"
+                            Background="{TemplateBinding Background}"
+                            Padding="{TemplateBinding Padding}"
+                            SnapsToDevicePixels="True">
+                        <ContentPresenter SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" />
+                    </Border>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style x:Key="RoundedDataGrid.Hosts.GroupStyle.ContainerStyle" TargetType="{x:Type GroupItem}">
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type GroupItem}">
+                    <Expander IsExpanded="False" MinHeight="{StaticResource Element.Size}">
+                        <Expander.Header>
+                            <DockPanel>
+                                <TextBlock FontWeight="SemiBold" Text="{Binding Path=Name}" Width="180" />
+                                <TextBlock FontWeight="SemiBold" Text="{Binding Path=ItemCount}" />
+                            </DockPanel>
+                        </Expander.Header>
+                        <Expander.Content>
+                            <ItemsPresenter />
+                        </Expander.Content>
+                    </Expander>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style x:Key="RoundedDataGrid.Hosts.Style" TargetType="{x:Type controls:RoundedDataGrid}" BasedOn="{StaticResource RoundedDataGrid.Style}">
+        <Setter Property="CanUserSortColumns" Value="True" />
+        <Setter Property="CellStyle" Value="{StaticResource RoundedDataGrid.Hosts.CellStyle}" />
+        <Setter Property="IsReadOnly" Value="True" />
+    </Style>
+
+    <!-- #endregion -->
+
+    <!-- #region RoundedDataGrid for Duplicates -->
+
+    <Style x:Key="RoundedDataGrid.Duplicates.HostColumn.HeaderStyle" TargetType="{x:Type DataGridColumnHeader}" BasedOn="{StaticResource DataGridColumnHeaderStyle}">
+        <Setter Property="HorizontalContentAlignment" Value="Right" />
+        <Setter Property="VerticalContentAlignment" Value="Center" />
+    </Style>
+
+    <Style x:Key="RoundedDataGrid.Duplicates.HostColumn.ElementStyle" TargetType="{x:Type TextBlock}" BasedOn="{StaticResource DataGridTextColumnStyle}">
+        <Setter Property="HorizontalAlignment" Value="Right" />
+        <Setter Property="VerticalAlignment" Value="Center" />
+    </Style>
+
+    <Style x:Key="RoundedDataGrid.Duplicates.AddressColumn.HeaderStyle" TargetType="{x:Type DataGridColumnHeader}" BasedOn="{StaticResource DataGridColumnHeaderStyle}">
+        <Setter Property="HorizontalContentAlignment" Value="Left" />
+        <Setter Property="VerticalContentAlignment" Value="Center" />
+    </Style>
+
+    <Style x:Key="RoundedDataGrid.Duplicates.AddressColumn.ElementStyle" TargetType="{x:Type ComboBox}" BasedOn="{StaticResource TextBlockComboBoxStyle}">
+        <Setter Property="HorizontalAlignment" Value="Left" />
+        <Setter Property="VerticalAlignment" Value="Center" />
+        <Setter Property="ItemsSource" Value="{Binding Path=Addresses}" />
+        <Setter Property="SelectedItem" Value="{Binding Path=SelectedAddress, UpdateSourceTrigger=PropertyChanged}" />
+    </Style>
+
+    <Style x:Key="RoundedDataGrid.Duplicates.AddressColumn.EditingElementStyle" TargetType="{x:Type ComboBox}" BasedOn="{StaticResource ComboBoxBaseStyle}">
+        <Setter Property="HorizontalAlignment" Value="Left" />
+        <Setter Property="VerticalAlignment" Value="Center" />
+        <Setter Property="ItemsSource" Value="{Binding Path=Addresses}" />
+        <Setter Property="SelectedItem" Value="{Binding Path=SelectedAddress, UpdateSourceTrigger=PropertyChanged}" />
+    </Style>
+
+    <Style x:Key="RoundedDataGrid.Duplicates.CellStyle" TargetType="{x:Type DataGridCell}" BasedOn="{StaticResource DataGridCellStyle}">
+        <Setter Property="BorderThickness" Value="0" />
+        <Setter Property="FocusVisualStyle" Value="{x:Null}" />
+        <Setter Property="Padding" Value="5" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type DataGridCell}">
+                    <Border BorderBrush="{TemplateBinding BorderBrush}"
+                            BorderThickness="{TemplateBinding BorderThickness}"
+                            Background="{TemplateBinding Background}"
+                            Padding="{TemplateBinding Padding}"
+                            SnapsToDevicePixels="True">
+                        <ContentPresenter SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" />
+                    </Border>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style x:Key="RoundedDataGrid.Duplicates.Style" TargetType="{x:Type controls:RoundedDataGrid}" BasedOn="{StaticResource RoundedDataGrid.Style}">
+        <Setter Property="CanUserSortColumns" Value="True" />
+        <Setter Property="CellStyle" Value="{StaticResource RoundedDataGrid.Duplicates.CellStyle}" />
+    </Style>
+
+    <!-- #endregion -->
+
+</ResourceDictionary>

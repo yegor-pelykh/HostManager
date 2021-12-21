@@ -1,0 +1,13 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:sys="clr-namespace:System;assembly=mscorlib">
+
+    <sys:Double x:Key="Element.Size">40</sys:Double>
+    <sys:Double x:Key="Element.Double.Size">80</sys:Double>
+    <sys:Double x:Key="Element.Tripple.Size">120</sys:Double>
+
+    <sys:Double x:Key="Gap.Size">20</sys:Double>
+    <GridLength x:Key="Gap.GridLength">20</GridLength>
+    <Thickness x:Key="Gap.Thickness">20</Thickness>
+
+</ResourceDictionary>

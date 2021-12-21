@@ -1,0 +1,33 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:system="clr-namespace:System;assembly=mscorlib">
+    
+    <system:String x:Key="String.Reload">Reload</system:String>
+    <system:String x:Key="String.Save">Save</system:String>
+    <system:String x:Key="String.Add">Add</system:String>
+    <system:String x:Key="String.Edit">Edit</system:String>
+    <system:String x:Key="String.Remove">Remove</system:String>
+    <system:String x:Key="String.Address">Address</system:String>
+    <system:String x:Key="String.Addresses">Addresses</system:String>
+    <system:String x:Key="String.Host">Host</system:String>
+    <system:String x:Key="String.MsgLoadingRecordsFailed">Error loading hosts from file</system:String>
+    <system:String x:Key="String.MsgCaptionLoadingRecordsFailed">Loading hosts</system:String>
+    <system:String x:Key="String.MsgSavingRecordsFailed">Error saving hosts to file</system:String>
+    <system:String x:Key="String.MsgCaptionSavingRecordsFailed">Saving hosts</system:String>
+    <system:String x:Key="String.RemovingDuplicates">Removing duplicates</system:String>
+    <system:String x:Key="String.RemovingDuplicatesDesc">Some hosts are bound to more than one address.&#x0A;Please choose the correct address for each one.</system:String>
+    <system:String x:Key="String.Apply">Apply</system:String>
+    <system:String x:Key="String.Close">Close</system:String>
+    <system:String x:Key="String.MsgRemoveRecord">Are you sure you want to delete the record:{0}&quot;{1}&quot;?</system:String>
+    <system:String x:Key="String.MsgCaptionRemoveRecord">Removing record</system:String>
+    <system:String x:Key="String.AddingRecord">Adding record</system:String>
+    <system:String x:Key="String.HostName">Host name</system:String>
+    <system:String x:Key="String.HostAddress">Host address</system:String>
+    <system:String x:Key="String.AutoResolve">Request an address from the DNS server</system:String>
+    <system:String x:Key="String.MsgAutoResolveFailed">Error resolving hostname &quot;{0}&quot; by DNS server</system:String>
+    <system:String x:Key="String.MsgCaptionAutoResolveFailed">Resolving hostname</system:String>
+    <system:String x:Key="String.ConfigSettings">Settings</system:String>
+    <system:String x:Key="String.ConfigSectionNetwork">Network</system:String>
+    <system:String x:Key="String.ConfigDnsServer">DNS Server:</system:String>
+
+</ResourceDictionary>

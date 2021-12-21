@@ -1,0 +1,120 @@
+﻿<Window x:Class="HostManager.Views.ShellWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:vm="clr-namespace:HostManager.ViewModels"
+        xmlns:b="http://schemas.microsoft.com/xaml/behaviors"
+        xmlns:behaviors="clr-namespace:HostManager.Behaviors"
+        xmlns:fa="clr-namespace:Meziantou.WpfFontAwesome;assembly=Meziantou.WpfFontAwesome"
+        xmlns:hc="https://handyorg.github.io/handycontrol"
+        xmlns:controls="clr-namespace:HostManager.Controls"
+        mc:Ignorable="d" d:DataContext="{d:DesignInstance vm:ShellWindowViewModel}"
+        Style="{StaticResource {x:Type Window}}"
+        WindowStartupLocation="CenterScreen"
+        Height="600" Width="800"
+        Title="ShellWindow">
+    <Window.Resources>
+        <CollectionViewSource x:Key="HostsSource" Source="{Binding Hosts}">
+            <CollectionViewSource.GroupDescriptions>
+                <PropertyGroupDescription PropertyName="Group" StringComparison="OrdinalIgnoreCase" />
+            </CollectionViewSource.GroupDescriptions>
+        </CollectionViewSource>
+    </Window.Resources>
+
+    <Grid Margin="{StaticResource Gap.Thickness}">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="{StaticResource Gap.GridLength}" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+
+        <Grid Grid.Row="0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="{StaticResource Gap.GridLength}" />
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="{StaticResource Gap.GridLength}" />
+                <ColumnDefinition Width="Auto" />
+            </Grid.ColumnDefinitions>
+
+            <hc:ButtonGroup Grid.Column="0">
+                <Button ToolTip="{DynamicResource String.Reload}"
+                        Command="{Binding CommandReload}"
+                        Width="{StaticResource Element.Size}"
+                        Height="{StaticResource Element.Size}">
+                    <fa:FontAwesomeIcon SolidIcon="SyncAlt" />
+                </Button>
+                <Button ToolTip="{DynamicResource String.Save}"
+                        Command="{Binding CommandSave}"
+                        Width="{StaticResource Element.Size}"
+                        Height="{StaticResource Element.Size}">
+                    <fa:FontAwesomeIcon SolidIcon="Save" />
+                </Button>
+            </hc:ButtonGroup>
+
+            <hc:ButtonGroup Grid.Column="2">
+                <Button ToolTip="{DynamicResource String.Add}"
+                        Command="{Binding CommandAddRecord}"
+                        Width="{StaticResource Element.Size}"
+                        Height="{StaticResource Element.Size}">
+                    <fa:FontAwesomeIcon SolidIcon="Plus" />
+                </Button>
+                <Button ToolTip="{DynamicResource String.Edit}"
+                        Command="{Binding CommandEditRecord}"
+                        Width="{StaticResource Element.Size}"
+                        Height="{StaticResource Element.Size}">
+                    <fa:FontAwesomeIcon SolidIcon="Edit" />
+                </Button>
+                <Button ToolTip="{DynamicResource String.Remove}"
+                        Command="{Binding CommandRemoveRecord}"
+                        Width="{StaticResource Element.Size}"
+                        Height="{StaticResource Element.Size}">
+                    <fa:FontAwesomeIcon SolidIcon="Minus" />
+                </Button>
+            </hc:ButtonGroup>
+
+            <hc:ButtonGroup Grid.Column="4">
+                <Button ToolTip="{DynamicResource String.ConfigSettings}"
+                        Command="{Binding CommandOpenSettings}"
+                        Width="{StaticResource Element.Size}"
+                        Height="{StaticResource Element.Size}">
+                    <fa:FontAwesomeIcon SolidIcon="Cog" />
+                </Button>
+            </hc:ButtonGroup>
+        </Grid>
+
+        <controls:RoundedDataGrid Grid.Row="2"
+                                  Style="{StaticResource RoundedDataGrid.Hosts.Style}"
+                                  ItemsSource="{Binding Source={StaticResource HostsSource}}"
+                                  SelectedItem="{Binding SelectedHost}">
+            <controls:RoundedDataGrid.Columns>
+                <DataGridTextColumn Binding="{Binding Path=Host}"
+                                    Header="{DynamicResource String.Host}"
+                                    HeaderStyle="{StaticResource RoundedDataGrid.Hosts.HostColumn.HeaderStyle}"
+                                    ElementStyle="{StaticResource RoundedDataGrid.Hosts.HostColumn.ElementStyle}"
+                                    SortDirection="Ascending"
+                                    Width="*" />
+                <DataGridTextColumn Binding="{Binding Path=Address}"
+                                    Header="{DynamicResource String.Address}"
+                                    HeaderStyle="{StaticResource RoundedDataGrid.Hosts.AddressColumn.HeaderStyle}"
+                                    ElementStyle="{StaticResource RoundedDataGrid.Hosts.AddressColumn.ElementStyle}"
+                                    Width="*" />
+            </controls:RoundedDataGrid.Columns>
+            <controls:RoundedDataGrid.GroupStyle>
+                <GroupStyle ContainerStyle="{StaticResource RoundedDataGrid.Hosts.GroupStyle.ContainerStyle}">
+                    <GroupStyle.Panel>
+                        <ItemsPanelTemplate>
+                            <DataGridRowsPresenter />
+                        </ItemsPanelTemplate>
+                    </GroupStyle.Panel>
+                </GroupStyle>
+            </controls:RoundedDataGrid.GroupStyle>
+            <b:Interaction.Behaviors>
+                <behaviors:HostsDataGridBehavior RowDoubleClickCommand="{Binding CommandEditRecord}" />
+            </b:Interaction.Behaviors>
+        </controls:RoundedDataGrid>
+
+    </Grid>
+    
+</Window>

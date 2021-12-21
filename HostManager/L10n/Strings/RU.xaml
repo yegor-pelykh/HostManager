@@ -1,0 +1,33 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:system="clr-namespace:System;assembly=mscorlib">
+
+    <system:String x:Key="String.Reload">Перезагрузить</system:String>
+    <system:String x:Key="String.Save">Сохранить</system:String>
+    <system:String x:Key="String.Add">Добавить</system:String>
+    <system:String x:Key="String.Edit">Редактировать</system:String>
+    <system:String x:Key="String.Remove">Удалить</system:String>
+    <system:String x:Key="String.Address">Адрес</system:String>
+    <system:String x:Key="String.Addresses">Адреса</system:String>
+    <system:String x:Key="String.Host">Хост</system:String>
+    <system:String x:Key="String.MsgLoadingRecordsFailed">Ошибка загрузки хостов из файла</system:String>
+    <system:String x:Key="String.MsgCaptionLoadingRecordsFailed">Загрузка хостов</system:String>
+    <system:String x:Key="String.MsgSavingRecordsFailed">Ошибка сохранения хостов в файл</system:String>
+    <system:String x:Key="String.MsgCaptionSavingRecordsFailed">Сохранение хостов</system:String>
+    <system:String x:Key="String.RemovingDuplicates">Удаление дубликатов</system:String>
+    <system:String x:Key="String.RemovingDuplicatesDesc">Некоторые хосты имеют привязку к более чем одному адресу.&#x0A;Пожалуйста, выберите правильный адрес для каждого из них.</system:String>
+    <system:String x:Key="String.Apply">Применить</system:String>
+    <system:String x:Key="String.Close">Закрыть</system:String>
+    <system:String x:Key="String.MsgRemoveRecord">Вы действительно хотите удалить запись:{0}&quot;{1}&quot;?</system:String>
+    <system:String x:Key="String.MsgCaptionRemoveRecord">Удаление записи</system:String>
+    <system:String x:Key="String.AddingRecord">Добавление записи</system:String>
+    <system:String x:Key="String.HostName">Имя хоста</system:String>
+    <system:String x:Key="String.HostAddress">Адрес хоста</system:String>
+    <system:String x:Key="String.AutoResolve">Запросить адрес у DNS сервера</system:String>
+    <system:String x:Key="String.MsgAutoResolveFailed">Ошибка разрешения DNS сервером имени хоста &quot;{0}&quot;</system:String>
+    <system:String x:Key="String.MsgCaptionAutoResolveFailed">Разрешение имени хоста</system:String>
+    <system:String x:Key="String.ConfigSettings">Настройки</system:String>
+    <system:String x:Key="String.ConfigSectionNetwork">Сеть</system:String>
+    <system:String x:Key="String.ConfigDnsServer">DNS Сервер:</system:String>
+
+</ResourceDictionary>
