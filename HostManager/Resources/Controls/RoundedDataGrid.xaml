@@ -113,14 +113,14 @@
         <Setter Property="VerticalContentAlignment" Value="Center" />
     </Style>
 
-    <Style x:Key="RoundedDataGrid.Duplicates.AddressColumn.ElementStyle" TargetType="{x:Type ComboBox}" BasedOn="{StaticResource TextBlockComboBoxStyle}">
+    <Style x:Key="RoundedDataGrid.Duplicates.AddressColumn.ElementStyle" TargetType="{x:Type ComboBox}" BasedOn="{StaticResource DataGridComboBoxColumnStyle}">
         <Setter Property="HorizontalAlignment" Value="Left" />
         <Setter Property="VerticalAlignment" Value="Center" />
         <Setter Property="ItemsSource" Value="{Binding Path=Addresses}" />
         <Setter Property="SelectedItem" Value="{Binding Path=SelectedAddress, UpdateSourceTrigger=PropertyChanged}" />
     </Style>
 
-    <Style x:Key="RoundedDataGrid.Duplicates.AddressColumn.EditingElementStyle" TargetType="{x:Type ComboBox}" BasedOn="{StaticResource ComboBoxBaseStyle}">
+    <Style x:Key="RoundedDataGrid.Duplicates.AddressColumn.EditingElementStyle" TargetType="{x:Type ComboBox}" BasedOn="{StaticResource DataGridEditingComboBoxColumnStyle}">
         <Setter Property="HorizontalAlignment" Value="Left" />
         <Setter Property="VerticalAlignment" Value="Center" />
         <Setter Property="ItemsSource" Value="{Binding Path=Addresses}" />
