@@ -192,15 +192,15 @@
         {
         "Name" = "8:Microsoft Visual Studio"
         "ProductName" = "8:HostManager"
-        "ProductCode" = "8:{062DDF65-97EA-4BFC-B63D-3610DFAFF2AC}"
-        "PackageCode" = "8:{7C36D385-F8E8-49A8-AC9F-5809A4BAA1E4}"
+        "ProductCode" = "8:{E8E25BE1-9156-4021-B9AE-6936611E3FCE}"
+        "PackageCode" = "8:{5F4E738F-D3E1-4589-BE94-BA9427363911}"
         "UpgradeCode" = "8:{45C0A497-5F65-48D4-A7BE-2F9B6DA51FC4}"
         "AspNetVersion" = "8:4.0.30319.0"
         "RestartWWWService" = "11:FALSE"
         "RemovePreviousVersions" = "11:TRUE"
         "DetectNewerInstalledVersion" = "11:TRUE"
         "InstallAllUsers" = "11:TRUE"
-        "ProductVersion" = "8:1.0.0"
+        "ProductVersion" = "8:1.1.2"
         "Manufacturer" = "8:Yegor Pelykh"
         "ARPHELPTELEPHONE" = "8:"
         "ARPHELPLINK" = "8:"
@@ -338,7 +338,7 @@
             "Target" = "8:_118FC61131E5417EA29F1339038AD546"
             "Folder" = "8:_D6C08E38B5C641D882A8774E6CA58EBA"
             "WorkingFolder" = "8:_AF850B383C8A46FCA4FF564AF0F1CF99"
-            "Icon" = "8:"
+            "Icon" = "8:_F6B69D4F428743D3B006951B320BF8E4"
             "Feature" = "8:"
             }
         }

@@ -12,9 +12,9 @@
         <BaseOutputPath>bin\$(Configuration)</BaseOutputPath>
         <ProduceReferenceAssembly>False</ProduceReferenceAssembly>
         <SignAssembly>False</SignAssembly>
-        <Version>1.1.0.0</Version>
-        <AssemblyVersion>1.1.0.0</AssemblyVersion>
-        <FileVersion>1.1.0.0</FileVersion>
+        <Version>1.1.2.0</Version>
+        <AssemblyVersion>1.1.2.0</AssemblyVersion>
+        <FileVersion>1.1.2.0</FileVersion>
         <Product>HostManager</Product>
         <Description>Application for easy management of system mappings of domain names to IP addresses.</Description>
         <Authors>YegorPelykh</Authors>
