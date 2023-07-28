@@ -20,7 +20,7 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
             <RowDefinition Height="{StaticResource Gap.GridLength}" />
-            <RowDefinition Height="Auto" />
+            <RowDefinition Height="300" />
             <RowDefinition Height="{StaticResource Gap.GridLength}" />
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>

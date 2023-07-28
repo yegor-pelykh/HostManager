@@ -44,6 +44,14 @@
             "PrerequisitesLocation" = "2:1"
             "Url" = "8:"
             "ComponentsUrl" = "8:"
+                "Items"
+                {
+                    "{EDC2488A-8267-493A-A98E-7D9C3B36CDF3}:.NETFramework,Version=v4.7.2"
+                    {
+                    "Name" = "8:Microsoft .NET Framework 4.7.2 (x86 and x64)"
+                    "ProductCode" = "8:.NETFramework,Version=v4.7.2"
+                    }
+                }
             }
         }
         "Release"
@@ -185,7 +193,7 @@
         "Name" = "8:Microsoft Visual Studio"
         "ProductName" = "8:HostManager"
         "ProductCode" = "8:{062DDF65-97EA-4BFC-B63D-3610DFAFF2AC}"
-        "PackageCode" = "8:{3CC05736-465D-497E-9D83-9C32DCD202F5}"
+        "PackageCode" = "8:{7C36D385-F8E8-49A8-AC9F-5809A4BAA1E4}"
         "UpgradeCode" = "8:{45C0A497-5F65-48D4-A7BE-2F9B6DA51FC4}"
         "AspNetVersion" = "8:4.0.30319.0"
         "RestartWWWService" = "11:FALSE"
@@ -319,7 +327,7 @@
             "Icon" = "8:_F6B69D4F428743D3B006951B320BF8E4"
             "Feature" = "8:"
             }
-            "{970C0BB2-C7D0-45D7-ABFA-7EC378858BC0}:_7BA30FE30C7348858DD639559E434B9F"
+            "{970C0BB2-C7D0-45D7-ABFA-7EC378858BC0}:_C28E2395A4A0455590DE111902F7EBD2"
             {
             "Name" = "8:HostManager"
             "Arguments" = "8:"
@@ -330,7 +338,7 @@
             "Target" = "8:_118FC61131E5417EA29F1339038AD546"
             "Folder" = "8:_D6C08E38B5C641D882A8774E6CA58EBA"
             "WorkingFolder" = "8:_AF850B383C8A46FCA4FF564AF0F1CF99"
-            "Icon" = "8:_F6B69D4F428743D3B006951B320BF8E4"
+            "Icon" = "8:"
             "Feature" = "8:"
             }
         }

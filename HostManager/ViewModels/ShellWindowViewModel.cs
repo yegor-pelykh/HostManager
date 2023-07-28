@@ -1,6 +1,9 @@
-﻿using HostManager.Behaviors;
+﻿using DnsClient.Protocol.Options;
+using HostManager.Behaviors;
+using HostManager.Configuration;
 using HostManager.Data;
 using HostManager.Extensions;
+using HostManager.Services;
 using HostManager.Views;
 using Prism.Commands;
 using Prism.Mvvm;
@@ -10,8 +13,12 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
+using System.Net;
+using System.Text;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
+using DnsClient.Protocol;
 
 namespace HostManager.ViewModels
 {
@@ -19,8 +26,10 @@ namespace HostManager.ViewModels
     {
         public ShellWindowViewModel(
             IDialogService dialogService,
-            Services.FileSystemService fileSystemService)
+            FileSystemService fileSystemService,
+            DnsResolverService dnsResolverService)
         {
+            DnsResolverService = dnsResolverService;
             _dialogService = dialogService;
             _fileSystemService = fileSystemService;
             InitializeCommands();
@@ -34,10 +43,14 @@ namespace HostManager.ViewModels
         public ICommand CommandAddRecord { get; private set; }
         public ICommand CommandEditRecord { get; private set; }
         public ICommand CommandRemoveRecord { get; private set; }
+        public ICommand CommandAddMultipleRecords { get; private set; }
+        public ICommand CommandUpdateAllHosts { get; private set; }
         public ICommand CommandOpenSettings { get; private set; }
         #endregion
 
         #region Properties
+        private DnsResolverService DnsResolverService { get; }
+
         public ObservableCollection<HostRecord> Hosts
         {
             get => _hosts;
@@ -65,6 +78,12 @@ namespace HostManager.ViewModels
             get => _canRemoveRecord;
             set => SetProperty(ref _canRemoveRecord, value);
         }
+
+        public string StatusBarText
+        {
+            get => _statusBarText;
+            set => SetProperty(ref _statusBarText, value);
+        }
         #endregion
 
         #region Methods
@@ -75,6 +94,8 @@ namespace HostManager.ViewModels
             CommandAddRecord = new DelegateCommand(AddRecord);
             CommandEditRecord = new DelegateCommand<object>(EditRecord);
             CommandRemoveRecord = new DelegateCommand(RemoveRecord);
+            CommandAddMultipleRecords = new DelegateCommand(AddMultipleRecords);
+            CommandUpdateAllHosts = new DelegateCommand(UpdateAllHosts);
             CommandOpenSettings = new DelegateCommand(OpenSettings);
         }
 
@@ -88,8 +109,8 @@ namespace HostManager.ViewModels
         {
             if (Hosts == null)
                 Hosts = new ObservableCollection<HostRecord>();
-
-            Hosts.Clear();
+            else
+                Hosts.Clear();
 
             try
             {
@@ -99,9 +120,7 @@ namespace HostManager.ViewModels
                     Hosts.AddRange(hosts);
                     Hosts.Sort(new HostRecordComparer(nameof(HostRecord.Host), ListSortDirection.Ascending));
                 }
-
-                // Hosts.AddRange(Hosts.Take(10));
-
+                
                 RemoveDuplicates(Hosts);
             }
             catch
@@ -198,6 +217,82 @@ namespace HostManager.ViewModels
             }
         }
 
+        private void AddMultipleRecords()
+        {
+            _dialogService.ShowDialog(nameof(AddMultipleRecordsDialog), null, result =>
+            {
+                var records = result.Parameters.GetValue<List<HostRecord>>(AddMultipleRecordsDialogViewModel.OutputDPRecords);
+                if (records != null)
+                {
+                    Hosts.AddRange(records);
+                    Hosts.Sort(new HostRecordComparer(nameof(HostRecord.Host), ListSortDirection.Ascending));
+                }
+
+                RemoveDuplicates(Hosts);
+            });
+        }
+
+        private async void UpdateAllHosts()
+        {
+            if (Hosts == null)
+                return;
+
+            if (MessageBox.Show(
+                    L10n.Localization.GetLocalized("String.MsgUpdateAllHostsWarning")
+                        .Replace("\n", Environment.NewLine),
+                    L10n.Localization.GetLocalized("String.MsgCaptionUpdateAllHosts"),
+                    MessageBoxButton.YesNo,
+                    MessageBoxImage.Warning) != MessageBoxResult.Yes)
+            {
+                return;
+            }
+
+            var server = Settings.Default.DnsServer;
+            var hostNames = Hosts
+                .Select(h => h.Host)
+                .ToArray();
+
+            var progressMessageMask = L10n.Localization.GetLocalized("String.MsgUpdateAllHostsProgress");
+            var progress = new Progress<Tuple<int, int>>(data  =>
+            {
+                StatusBarText = string.Format(progressMessageMask, data.Item1 + 1, hostNames.Length, data.Item2);
+            });
+            var records = await DnsResolverService.ResolveMultipleIpAsync(server, hostNames, progress);
+            var failedHostsCount = hostNames.Count(h => !records.ContainsKey(h));
+
+            for (var i = Hosts.Count - 1; i >= 0; i--)
+            {
+                var record = Hosts[i];
+                if (!records.TryGetValue(record.Host, out var address) || address.Count <= 0)
+                {
+                    Hosts.RemoveAt(i);
+                    continue;
+                }
+                var a = address[0].Address;
+                if (!Equals(a, IPAddress.None))
+                    record.Address = a;
+            }
+
+            StatusBarText = null;
+            
+            if (failedHostsCount > 0)
+            {
+                MessageBox.Show(
+                    string.Format(L10n.Localization.GetLocalized("String.MsgUpdateAllHostsFinishedWithErrors"), failedHostsCount),
+                    L10n.Localization.GetLocalized("String.MsgCaptionUpdateAllHosts"),
+                    MessageBoxButton.OK,
+                    MessageBoxImage.Information);
+            }
+            else
+            {
+                MessageBox.Show(
+                    L10n.Localization.GetLocalized("String.MsgUpdateAllHostsFinished"),
+                    L10n.Localization.GetLocalized("String.MsgCaptionUpdateAllHosts"),
+                    MessageBoxButton.OK,
+                    MessageBoxImage.Information);
+            }
+        }
+
         private void OpenSettings()
         {
             _dialogService.ShowDialog(nameof(ConfigurationDialog));
@@ -249,12 +344,13 @@ namespace HostManager.ViewModels
         #endregion
 
         #region Fields
-        private IDialogService _dialogService;
-        private Services.FileSystemService _fileSystemService;
+        private readonly IDialogService _dialogService;
+        private readonly Services.FileSystemService _fileSystemService;
         private ObservableCollection<HostRecord> _hosts;
         private HostRecord _selectedHost;
         private bool _canEditRecord;
         private bool _canRemoveRecord;
+        private string _statusBarText;
         #endregion
 
     }

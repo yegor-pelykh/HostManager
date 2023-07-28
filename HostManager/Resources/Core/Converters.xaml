@@ -4,5 +4,6 @@
 
     <conv:SystemIconConverter x:Key="SystemIconConverter" />
     <conv:IPAddressConverter x:Key="IPAddressConverter" />
+    <conv:IsNotNullConverter x:Key="IsNotNullConverter" />
 
 </ResourceDictionary>

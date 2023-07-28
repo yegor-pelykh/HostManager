@@ -16,9 +16,9 @@ namespace HostManager.ViewModels
 {
     internal class EditRecordDialogViewModel : BindableBase, IDialogAware
     {
-        internal EditRecordDialogViewModel(DnsResolver dnsResolver)
+        internal EditRecordDialogViewModel(DnsResolverService dnsResolverService)
         {
-            DnsResolver = dnsResolver;
+            DnsResolverService = dnsResolverService;
             InitializeCommands();
             UpdateCanEditAddress();
         }
@@ -33,9 +33,11 @@ namespace HostManager.ViewModels
         #endregion
 
         #region Properties
-        public string Title => L10n.Localization.GetLocalized("String.AddingRecord");
+        private DnsResolverService DnsResolverService { get; }
 
-        internal DnsResolver DnsResolver { get; }
+        public string Title => Mode == DialogMode.Add
+            ? L10n.Localization.GetLocalized("String.AddingRecord")
+            : L10n.Localization.GetLocalized("String.EditingRecord");
 
         public DialogMode Mode
         {
@@ -126,7 +128,7 @@ namespace HostManager.ViewModels
 
             try
             {
-                var addresses = await DnsResolver.ResolveIpAddressAsync(server, hostName);
+                var addresses = await DnsResolverService.ResolveIpAsync(server, hostName);
                 if (addresses.Count > 0)
                     HostAddress = addresses[0].Address;
             }

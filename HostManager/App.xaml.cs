@@ -29,10 +29,11 @@ namespace HostManager
         protected override void RegisterTypes(IContainerRegistry containerRegistry)
         {
             containerRegistry.RegisterSingleton<Services.FileSystemService, Services.FileSystemService>();
-            containerRegistry.RegisterSingleton<Services.DnsResolver, Services.DnsResolver>();
+            containerRegistry.RegisterSingleton<Services.DnsResolverService, Services.DnsResolverService>();
 
             containerRegistry.RegisterDialog<Views.DuplicatesDialog, ViewModels.DuplicatesDialogViewModel>();
             containerRegistry.RegisterDialog<Views.EditRecordDialog, ViewModels.EditRecordDialogViewModel>();
+            containerRegistry.RegisterDialog<Views.AddMultipleRecordsDialog, ViewModels.AddMultipleRecordsDialogViewModel>();
             containerRegistry.RegisterDialog<Views.ConfigurationDialog, ViewModels.ConfigurationDialogViewModel>();
 
             ViewModelLocationProvider.Register(typeof(Views.ShellWindow).ToString(), typeof(ViewModels.ShellWindowViewModel));

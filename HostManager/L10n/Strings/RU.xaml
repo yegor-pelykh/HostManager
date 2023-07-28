@@ -5,11 +5,14 @@
     <system:String x:Key="String.Reload">Перезагрузить</system:String>
     <system:String x:Key="String.Save">Сохранить</system:String>
     <system:String x:Key="String.Add">Добавить</system:String>
+    <system:String x:Key="String.AddMultiple">Добавить несколько</system:String>
     <system:String x:Key="String.Edit">Редактировать</system:String>
+    <system:String x:Key="String.UpdateAllHosts">Обновить адреса всех хостов с помощью DNS сервера</system:String>
     <system:String x:Key="String.Remove">Удалить</system:String>
     <system:String x:Key="String.Address">Адрес</system:String>
     <system:String x:Key="String.Addresses">Адреса</system:String>
     <system:String x:Key="String.Host">Хост</system:String>
+    <system:String x:Key="String.AddingMultipleRecords">Добавление нескольких записей</system:String>
     <system:String x:Key="String.MsgLoadingRecordsFailed">Ошибка загрузки хостов из файла</system:String>
     <system:String x:Key="String.MsgCaptionLoadingRecordsFailed">Загрузка хостов</system:String>
     <system:String x:Key="String.MsgSavingRecordsFailed">Ошибка сохранения хостов в файл</system:String>
@@ -17,17 +20,32 @@
     <system:String x:Key="String.RemovingDuplicates">Удаление дубликатов</system:String>
     <system:String x:Key="String.RemovingDuplicatesDesc">Некоторые хосты имеют привязку к более чем одному адресу.&#x0A;Пожалуйста, выберите правильный адрес для каждого из них.</system:String>
     <system:String x:Key="String.Apply">Применить</system:String>
+    <system:String x:Key="String.Create">Создать</system:String>
     <system:String x:Key="String.Close">Закрыть</system:String>
     <system:String x:Key="String.MsgRemoveRecord">Вы действительно хотите удалить запись:{0}&quot;{1}&quot;?</system:String>
     <system:String x:Key="String.MsgCaptionRemoveRecord">Удаление записи</system:String>
     <system:String x:Key="String.AddingRecord">Добавление записи</system:String>
+    <system:String x:Key="String.EditingRecord">Редактирование записи</system:String>
     <system:String x:Key="String.HostName">Имя хоста</system:String>
     <system:String x:Key="String.HostAddress">Адрес хоста</system:String>
     <system:String x:Key="String.AutoResolve">Запросить адрес у DNS сервера</system:String>
     <system:String x:Key="String.MsgAutoResolveFailed">Ошибка разрешения DNS сервером имени хоста &quot;{0}&quot;</system:String>
     <system:String x:Key="String.MsgCaptionAutoResolveFailed">Разрешение имени хоста</system:String>
+    <system:String x:Key="String.MsgAddingMultipleRecordsWarning">ВНИМАНИЕ: записи без IP адреса не будут добавлены!</system:String>
+    <system:String x:Key="String.MsgAddingMultipleRecords">Набор записей ({0} шт.) будет добавлен к общему списку хостов. Продолжить?</system:String>
+    <system:String x:Key="String.MsgCaptionAddingMultipleRecords">Добавление нескольких записей</system:String>
+    <system:String x:Key="String.MsgUpdateAllHostsFinished">Все хосты были успешно обновлены.</system:String>
+    <system:String x:Key="String.MsgUpdateAllHostsFinishedWithErrors">Обновление всех хостов завершено. Хостов с ошибками удалено: {0}.</system:String>
+    <system:String x:Key="String.MsgCaptionUpdateAllHosts">Обновление всех хостов</system:String>
+    <system:String x:Key="String.MsgUpdateAllHostsWarning">Эта операция обновит адреса всех хостов. Те хосты, адрес которых невозможно получить, будут удалены. Вы уверены что хотите продолжить?</system:String>
+    <system:String x:Key="String.MsgUpdateAllHostsProgress">Обновление хостов: {0} из {1} (хостов с ошибками: {2})...</system:String>
+    <system:String x:Key="String.HostnameTemplate">Шаблон имени хоста</system:String>
+    <system:String x:Key="String.HostnameTemplateInfo">Поставьте * в том месте, куда хотите вставить счетчик</system:String>
+    <system:String x:Key="String.CounterFrom">Счетчик ОТ</system:String>
+    <system:String x:Key="String.CounterTo">Счетчик ДО</system:String>
     <system:String x:Key="String.ConfigSettings">Настройки</system:String>
     <system:String x:Key="String.ConfigSectionNetwork">Сеть</system:String>
     <system:String x:Key="String.ConfigDnsServer">DNS Сервер:</system:String>
+    
 
 </ResourceDictionary>
