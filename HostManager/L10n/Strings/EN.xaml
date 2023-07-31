@@ -46,5 +46,17 @@
     <system:String x:Key="String.ConfigSettings">Settings</system:String>
     <system:String x:Key="String.ConfigSectionNetwork">Network</system:String>
     <system:String x:Key="String.ConfigDnsServer">DNS Server:</system:String>
+    <system:String x:Key="String.CreateRoutesList">Create a list of subnets for hosts</system:String>
+    <system:String x:Key="String.RoutesListDialogTitle">Networks list</system:String>
+    <system:String x:Key="String.NetworkCidr">Network / CIDR</system:String>
+    <system:String x:Key="String.NetworkMask">Network / Mask</system:String>
+    <system:String x:Key="String.OpenVpn">OpenVPN</system:String>
+    <system:String x:Key="String.MsgCreateRoutesListWarning">This operation will create a list of networks corresponding to the list of host addresses. Are you sure you want to continue?</system:String>
+    <system:String x:Key="String.MsgCaptionCreateRoutesList">Create routes list</system:String>
+    <system:String x:Key="String.MsgCreateRoutesListLoadingDatabase">Loading the ASN database...</system:String>
+    <system:String x:Key="String.MsgCreateRoutesListProcessingDatabase">Processing the ASN database...</system:String>
+    <system:String x:Key="String.MsgCreateRoutesListCreatingList">Compiling a list of subnets...</system:String>
+    <system:String x:Key="String.MsgCreateRoutesListSearchingSubnets">Iterating over hosts: {0} out of {1} (subnets found: {2})...</system:String>
+    <system:String x:Key="String.MsgCreateRoutesListFailedHostsTitle">Hosts for which no subnets were found:</system:String>
 
 </ResourceDictionary>

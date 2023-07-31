@@ -31,7 +31,7 @@ namespace HostManager.ViewModels
         #endregion
 
         #region Properties
-        public string Title => Localization.GetLocalized("String.ConfigSettings");
+        public string Title => "String.ConfigSettings".GetLocalized();
 
         public List<DnsServer> DnsServerList
         {

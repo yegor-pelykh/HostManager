@@ -3,7 +3,6 @@ using DnsClient.Protocol;
 using HostManager.Data;
 using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
@@ -96,7 +95,7 @@ namespace HostManager.Services
                     IPAddress.Parse("9.9.9.9"),
                     IPAddress.Parse("149.112.112.112"),
                 };
-                case DnsServer.OpenDNS: return new IPAddress[]
+                case DnsServer.OpenDns: return new IPAddress[]
                 {
                     IPAddress.Parse("208.67.222.222"),
                     IPAddress.Parse("208.67.220.220"),

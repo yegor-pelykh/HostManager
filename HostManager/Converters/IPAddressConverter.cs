@@ -6,11 +6,11 @@ using System.Net;
 namespace HostManager.Converters
 {
     [ValueConversion(typeof(IPAddress), typeof(string))]
-    public class IPAddressConverter : IValueConverter
+    public class IpAddressConverter : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            if (!(value is IPAddress address))
+            if (value is not IPAddress address)
                 return null;
 
             return address.ToString();
@@ -18,7 +18,7 @@ namespace HostManager.Converters
         
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            if (!(value is string str))
+            if (value is not string str)
                 return null;
 
             return IPAddress.TryParse(str.Trim(), out var address)

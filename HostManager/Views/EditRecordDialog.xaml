@@ -42,7 +42,7 @@
                      hc:InfoElement.Title="{DynamicResource String.HostAddress}"
                      Style="{StaticResource TextBox.Style}"
                      Text="{Binding HostAddress,
-                                    Converter={StaticResource IPAddressConverter},
+                                    Converter={StaticResource IpAddressConverter},
                                     UpdateSourceTrigger=LostFocus,
                                     IsAsync=True}"
                      IsEnabled="{Binding CanEditAddress}" />

@@ -26,7 +26,7 @@ namespace HostManager.ViewModels
         #endregion
 
         #region Properties
-        public string Title => Localization.GetLocalized("String.RemovingDuplicates");
+        public string Title => "String.RemovingDuplicates".GetLocalized();
 
         public List<DuplicateRecord> Duplicates
         {
@@ -45,7 +45,7 @@ namespace HostManager.ViewModels
 
         public void OnDialogOpened(IDialogParameters parameters)
         {
-            Duplicates = parameters.GetValue<List<DuplicateRecord>>(InputDPDuplicates);
+            Duplicates = parameters.GetValue<List<DuplicateRecord>>(InputDpDuplicates);
         }
 
         private void InitializeCommands()
@@ -59,9 +59,9 @@ namespace HostManager.ViewModels
 
             var result = new DialogResult(ButtonResult.OK, new DialogParameters
             {
-                { OutputDPDuplicates, Duplicates},
+                { OutputDpDuplicates, Duplicates},
             });
-            RequestClose.Invoke(result);
+            RequestClose?.Invoke(result);
         }
         #endregion
 
@@ -71,8 +71,8 @@ namespace HostManager.ViewModels
         #endregion
 
         #region Constants
-        public const string InputDPDuplicates = "Duplicates";
-        public const string OutputDPDuplicates = "Duplicates";
+        public const string InputDpDuplicates = "Duplicates";
+        public const string OutputDpDuplicates = "Duplicates";
         #endregion
 
     }

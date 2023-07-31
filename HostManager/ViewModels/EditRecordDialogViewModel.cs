@@ -36,8 +36,8 @@ namespace HostManager.ViewModels
         private DnsResolverService DnsResolverService { get; }
 
         public string Title => Mode == DialogMode.Add
-            ? L10n.Localization.GetLocalized("String.AddingRecord")
-            : L10n.Localization.GetLocalized("String.EditingRecord");
+            ? "String.AddingRecord".GetLocalized()
+            : "String.EditingRecord".GetLocalized();
 
         public DialogMode Mode
         {
@@ -97,8 +97,8 @@ namespace HostManager.ViewModels
 
         public void OnDialogOpened(IDialogParameters parameters)
         {
-            Mode = parameters.GetValue<DialogMode>(InputDPMode);
-            var record = parameters.GetValue<HostRecord>(InputDPRecord);
+            Mode = parameters.GetValue<DialogMode>(InputDpMode);
+            var record = parameters.GetValue<HostRecord>(InputDpRecord);
             if (record != null)
             {
                 HostName = record.Host;
@@ -117,7 +117,7 @@ namespace HostManager.ViewModels
             return HostNameCheckRegex.IsMatch(hostName);
         }
 
-        private bool IsValidIPAddress(IPAddress ipAddress)
+        private bool IsValidIpAddress(IPAddress ipAddress)
         {
             return ipAddress != null;
         }
@@ -134,10 +134,10 @@ namespace HostManager.ViewModels
             }
             catch (Exception)
             {
-                var message = string.Format(L10n.Localization.GetLocalized("String.MsgAutoResolveFailed"), hostName);
+                var message = string.Format("String.MsgAutoResolveFailed".GetLocalized(), hostName);
                 MessageBox.Show(
                     message,
-                    L10n.Localization.GetLocalized("String.MsgCaptionAutoResolveFailed"),
+                    "String.MsgCaptionAutoResolveFailed".GetLocalized(),
                     MessageBoxButton.OK,
                     MessageBoxImage.Error);
             }
@@ -157,7 +157,7 @@ namespace HostManager.ViewModels
         private void UpdateCanApply()
         {
             CanApply = IsValidHostName(HostName) &&
-                IsValidIPAddress(HostAddress) &&
+                IsValidIpAddress(HostAddress) &&
                 !_isAutoResolveStarted;
         }
 
@@ -183,7 +183,7 @@ namespace HostManager.ViewModels
             var record = new HostRecord(HostAddress, HostName);
             var result = new DialogResult(ButtonResult.OK, new DialogParameters
             {
-                { OutputDPRecord, record},
+                { OutputDpRecord, record},
             });
             RequestClose.Invoke(result);
         }
@@ -205,9 +205,9 @@ namespace HostManager.ViewModels
         #endregion
 
         #region Constants
-        public const string InputDPMode = "Mode";
-        public const string InputDPRecord = "Record";
-        public const string OutputDPRecord = "Record";
+        public const string InputDpMode = "Mode";
+        public const string InputDpRecord = "Record";
+        public const string OutputDpRecord = "Record";
         #endregion
 
         #region Types

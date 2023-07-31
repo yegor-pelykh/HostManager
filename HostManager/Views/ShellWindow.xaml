@@ -47,6 +47,8 @@
                     <ColumnDefinition Width="Auto" />
                     <ColumnDefinition Width="{StaticResource Gap.GridLength}" />
                     <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="{StaticResource Gap.GridLength}" />
+                    <ColumnDefinition Width="Auto" />
                 </Grid.ColumnDefinitions>
 
                 <hc:ButtonGroup Grid.Column="0">
@@ -106,6 +108,15 @@
                 </hc:ButtonGroup>
 
                 <hc:ButtonGroup Grid.Column="8">
+                    <Button ToolTip="{DynamicResource String.CreateRoutesList}"
+                            Command="{Binding CommandCreateRoutesList}"
+                            Width="{StaticResource Element.Size}"
+                            Height="{StaticResource Element.Size}">
+                        <fa:FontAwesomeIcon SolidIcon="NetworkWired" />
+                    </Button>
+                </hc:ButtonGroup>
+
+                <hc:ButtonGroup Grid.Column="10">
                     <Button ToolTip="{DynamicResource String.ConfigSettings}"
                         Command="{Binding CommandOpenSettings}"
                         Width="{StaticResource Element.Size}"

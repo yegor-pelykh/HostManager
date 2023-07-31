@@ -3,7 +3,7 @@
                     xmlns:conv="clr-namespace:HostManager.Converters">
 
     <conv:SystemIconConverter x:Key="SystemIconConverter" />
-    <conv:IPAddressConverter x:Key="IPAddressConverter" />
+    <conv:IpAddressConverter x:Key="IpAddressConverter" />
     <conv:IsNotNullConverter x:Key="IsNotNullConverter" />
 
 </ResourceDictionary>

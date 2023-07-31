@@ -22,7 +22,7 @@ namespace HostManager.Controls
         {
             base.OnApplyTemplate();
 
-            var border = TreeHelper.GetChild<Border>(this);
+            var border = this.GetChild<Border>();
             if (border != null)
                 border.CornerRadius = CornerRadius;
         }

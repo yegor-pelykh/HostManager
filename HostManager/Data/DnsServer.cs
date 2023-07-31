@@ -4,7 +4,7 @@
     {
         Google,
         Quad9,
-        OpenDNS,
+        OpenDns,
         Cloudflare,
     }
 

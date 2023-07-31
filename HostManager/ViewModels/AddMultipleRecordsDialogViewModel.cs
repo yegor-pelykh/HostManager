@@ -150,7 +150,7 @@ namespace HostManager.ViewModels
             {
                 var result = new DialogResult(ButtonResult.OK, new DialogParameters
                 {
-                    { OutputDPRecords, records},
+                    { OutputDpRecords, records},
                 });
                 RequestClose?.Invoke(result);
             }
@@ -194,7 +194,7 @@ namespace HostManager.ViewModels
         #endregion
 
         #region Constants
-        public const string OutputDPRecords = "Records";
+        public const string OutputDpRecords = "Records";
         #endregion
 
     }

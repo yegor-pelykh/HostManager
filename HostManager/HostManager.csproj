@@ -12,9 +12,9 @@
         <BaseOutputPath>bin\$(Configuration)</BaseOutputPath>
         <ProduceReferenceAssembly>False</ProduceReferenceAssembly>
         <SignAssembly>False</SignAssembly>
-        <Version>1.1.2.0</Version>
-        <AssemblyVersion>1.1.2.0</AssemblyVersion>
-        <FileVersion>1.1.2.0</FileVersion>
+        <Version>1.2.0.0</Version>
+        <AssemblyVersion>1.2.0.0</AssemblyVersion>
+        <FileVersion>1.2.0.0</FileVersion>
         <Product>HostManager</Product>
         <Description>Application for easy management of system mappings of domain names to IP addresses.</Description>
         <Authors>YegorPelykh</Authors>
@@ -42,6 +42,7 @@
     <ItemGroup>
         <PackageReference Include="DnsClient" Version="1.7.0" />
         <PackageReference Include="HandyControl" Version="3.4.0" />
+        <PackageReference Include="IPNetwork2" Version="2.6.598" />
         <PackageReference Include="Meziantou.WpfFontAwesome" Version="5.15.4" />
         <PackageReference Include="Prism.Unity" Version="8.1.97" />
         <PackageReference Include="System.Drawing.Common" Version="7.0.0" />
@@ -67,6 +68,9 @@
         <Page Update="Resources\Core\Theme.xaml">
             <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
             <SubType>Designer</SubType>
+        </Page>
+        <Page Update="Views\RoutesListDialog.xaml">
+          <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
         </Page>
         <Page Update="Views\AddMultipleRecordsDialog.xaml">
             <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
@@ -94,6 +98,9 @@
     </ItemGroup>
 
     <ItemGroup>
+        <Compile Update="Views\RoutesListDialog.xaml.cs">
+          <SubType>Code</SubType>
+        </Compile>
         <Compile Update="Views\AddMultipleRecordsDialog.xaml.cs">
             <SubType>Code</SubType>
         </Compile>

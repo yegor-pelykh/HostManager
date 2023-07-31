@@ -60,7 +60,7 @@ namespace HostManager.Behaviors
 
         private void OnMouseDoubleClick(object sender, MouseButtonEventArgs args)
         {
-            var row = TreeHelper.GetParent<DataGridRow>(args.OriginalSource as DependencyObject);
+            var row = (args.OriginalSource as DependencyObject).GetParent<DataGridRow>();
             if (row == null)
                 return;
 

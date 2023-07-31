@@ -46,6 +46,17 @@
     <system:String x:Key="String.ConfigSettings">Настройки</system:String>
     <system:String x:Key="String.ConfigSectionNetwork">Сеть</system:String>
     <system:String x:Key="String.ConfigDnsServer">DNS Сервер:</system:String>
-    
+    <system:String x:Key="String.CreateRoutesList">Создать список подсетей для хостов</system:String>
+    <system:String x:Key="String.RoutesListDialogTitle">Список сетей</system:String>
+    <system:String x:Key="String.NetworkCidr">Сеть / CIDR</system:String>
+    <system:String x:Key="String.NetworkMask">Сеть / Маска</system:String>
+    <system:String x:Key="String.OpenVpn">OpenVPN</system:String>
+    <system:String x:Key="String.MsgCreateRoutesListWarning">Эта операция создаст список подсетей, соответствующих списку адресов узлов. Вы уверены что хотите продолжить?</system:String>
+    <system:String x:Key="String.MsgCaptionCreateRoutesList">Создать список подсетей</system:String>
+    <system:String x:Key="String.MsgCreateRoutesListLoadingDatabase">Загрузка базы данных ASN...</system:String>
+    <system:String x:Key="String.MsgCreateRoutesListProcessingDatabase">Обработка базы данных ASN...</system:String>
+    <system:String x:Key="String.MsgCreateRoutesListCreatingList">Составление списка подсетей...</system:String>
+    <system:String x:Key="String.MsgCreateRoutesListSearchingSubnets">Перебор узлов: {0} из {1} (найдено подсетей {2})...</system:String>
+    <system:String x:Key="String.MsgCreateRoutesListFailedHostsTitle">Узлы, для которых не найдены подсети:</system:String>
 
 </ResourceDictionary>

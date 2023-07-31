@@ -99,7 +99,7 @@
                                                 SortDirection="Ascending"
                                                 IsReadOnly="True"
                                                 Width="*" />
-                            <DataGridTextColumn Binding="{Binding Path=Address, Converter={StaticResource IPAddressConverter}}"
+                            <DataGridTextColumn Binding="{Binding Path=Address, Converter={StaticResource IpAddressConverter}}"
                                                 Header="{DynamicResource String.Address}"
                                                 HeaderStyle="{StaticResource RoundedDataGrid.Hosts.AddressColumn.HeaderStyle}"
                                                 ElementStyle="{StaticResource RoundedDataGrid.Hosts.AddressColumn.ElementStyle}"

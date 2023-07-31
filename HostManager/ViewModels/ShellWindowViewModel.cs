@@ -1,6 +1,4 @@
-﻿using DnsClient.Protocol.Options;
-using HostManager.Behaviors;
-using HostManager.Configuration;
+﻿using HostManager.Configuration;
 using HostManager.Data;
 using HostManager.Extensions;
 using HostManager.Services;
@@ -14,11 +12,8 @@ using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
 using System.Net;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
-using DnsClient.Protocol;
 
 namespace HostManager.ViewModels
 {
@@ -27,9 +22,11 @@ namespace HostManager.ViewModels
         public ShellWindowViewModel(
             IDialogService dialogService,
             FileSystemService fileSystemService,
-            DnsResolverService dnsResolverService)
+            DnsResolverService dnsResolverService,
+            AsnProviderService asnProviderService)
         {
             DnsResolverService = dnsResolverService;
+            AsnProviderService = asnProviderService;
             _dialogService = dialogService;
             _fileSystemService = fileSystemService;
             InitializeCommands();
@@ -45,11 +42,14 @@ namespace HostManager.ViewModels
         public ICommand CommandRemoveRecord { get; private set; }
         public ICommand CommandAddMultipleRecords { get; private set; }
         public ICommand CommandUpdateAllHosts { get; private set; }
+        public ICommand CommandCreateRoutesList { get; private set; }
         public ICommand CommandOpenSettings { get; private set; }
         #endregion
 
         #region Properties
         private DnsResolverService DnsResolverService { get; }
+        
+        private AsnProviderService AsnProviderService { get; }
 
         public ObservableCollection<HostRecord> Hosts
         {
@@ -96,6 +96,7 @@ namespace HostManager.ViewModels
             CommandRemoveRecord = new DelegateCommand(RemoveRecord);
             CommandAddMultipleRecords = new DelegateCommand(AddMultipleRecords);
             CommandUpdateAllHosts = new DelegateCommand(UpdateAllHosts);
+            CommandCreateRoutesList = new DelegateCommand(CreateRoutesList);
             CommandOpenSettings = new DelegateCommand(OpenSettings);
         }
 
@@ -156,11 +157,11 @@ namespace HostManager.ViewModels
         {
             var parameters = new DialogParameters
             {
-                { EditRecordDialogViewModel.InputDPMode, EditRecordDialogViewModel.DialogMode.Add }
+                { EditRecordDialogViewModel.InputDpMode, EditRecordDialogViewModel.DialogMode.Add }
             };
             _dialogService.ShowDialog(nameof(EditRecordDialog), parameters, result =>
             {
-                var hostRecord = result.Parameters.GetValue<HostRecord>(EditRecordDialogViewModel.OutputDPRecord);
+                var hostRecord = result.Parameters.GetValue<HostRecord>(EditRecordDialogViewModel.OutputDpRecord);
                 if (hostRecord != null)
                 {
                     Hosts.Add(hostRecord);
@@ -184,12 +185,12 @@ namespace HostManager.ViewModels
 
             var parameters = new DialogParameters
             {
-                { EditRecordDialogViewModel.InputDPMode, EditRecordDialogViewModel.DialogMode.Edit },
-                { EditRecordDialogViewModel.InputDPRecord, editableRecord }
+                { EditRecordDialogViewModel.InputDpMode, EditRecordDialogViewModel.DialogMode.Edit },
+                { EditRecordDialogViewModel.InputDpRecord, editableRecord }
             };
             _dialogService.ShowDialog(nameof(EditRecordDialog), parameters, result =>
             {
-                var hostRecord = result.Parameters.GetValue<HostRecord>(EditRecordDialogViewModel.OutputDPRecord);
+                var hostRecord = result.Parameters.GetValue<HostRecord>(EditRecordDialogViewModel.OutputDpRecord);
                 if (hostRecord != null)
                 {
                     editableRecord.Host = hostRecord.Host;
@@ -221,7 +222,7 @@ namespace HostManager.ViewModels
         {
             _dialogService.ShowDialog(nameof(AddMultipleRecordsDialog), null, result =>
             {
-                var records = result.Parameters.GetValue<List<HostRecord>>(AddMultipleRecordsDialogViewModel.OutputDPRecords);
+                var records = result.Parameters.GetValue<List<HostRecord>>(AddMultipleRecordsDialogViewModel.OutputDpRecords);
                 if (records != null)
                 {
                     Hosts.AddRange(records);
@@ -293,6 +294,58 @@ namespace HostManager.ViewModels
             }
         }
 
+        private async void CreateRoutesList()
+        {
+            if (Hosts == null)
+                return;
+
+            if (MessageBox.Show(
+                    L10n.Localization.GetLocalized("String.MsgCreateRoutesListWarning")
+                        .Replace("\n", Environment.NewLine),
+                    L10n.Localization.GetLocalized("String.MsgCaptionCreateRoutesList"),
+                    MessageBoxButton.YesNo,
+                    MessageBoxImage.Warning) != MessageBoxResult.Yes)
+            {
+                return;
+            }
+
+            StatusBarText = L10n.Localization.GetLocalized("String.MsgCreateRoutesListLoadingDatabase");
+
+            const string databaseFileName = "fullASN.json";
+            var jsonString = await AsnProviderService.DownloadFileAsync($"https://ipapi.is/data/{databaseFileName}.zip", databaseFileName);
+            if (jsonString == null)
+                return;
+
+            StatusBarText = L10n.Localization.GetLocalized("String.MsgCreateRoutesListProcessingDatabase");
+
+            var asnRecords = await AsnProviderService.GetAsnRecordsAsync(jsonString);
+            if (asnRecords == null)
+                return;
+
+            StatusBarText = L10n.Localization.GetLocalized("String.MsgCreateRoutesListCreatingList");
+
+            SortedSet<HostRecord> failedHosts = null;
+            var progress = new Progress<Tuple<int, int, SortedSet<HostRecord>>>(data =>
+            {
+                failedHosts = data.Item3;
+                StatusBarText = string.Format(
+                    L10n.Localization.GetLocalized("String.MsgCreateRoutesListSearchingSubnets"),
+                    data.Item1 + 1, Hosts.Count, data.Item2);
+            });
+            var networks = await AsnProviderService.GetNetworksAsync(Hosts, asnRecords, progress);
+            if (networks == null)
+                return;
+
+            StatusBarText = null;
+
+            var parameters = new DialogParameters
+            {
+                { RoutesListDialogViewModel.InputDpNetworks, networks },
+                { RoutesListDialogViewModel.InputDpFailedHosts, failedHosts },
+            };
+            _dialogService.ShowDialog(nameof(RoutesListDialog), parameters, null);
+        }
+
         private void OpenSettings()
         {
             _dialogService.ShowDialog(nameof(ConfigurationDialog));
@@ -312,11 +365,11 @@ namespace HostManager.ViewModels
             {
                 var parameters = new DialogParameters
                 {
-                    { DuplicatesDialogViewModel.InputDPDuplicates, duplicates }
+                    { DuplicatesDialogViewModel.InputDpDuplicates, duplicates }
                 };
                 _dialogService.ShowDialog(nameof(DuplicatesDialog), parameters, result =>
                 {
-                    var records = result.Parameters.GetValue<List<DuplicateRecord>>(DuplicatesDialogViewModel.OutputDPDuplicates);
+                    var records = result.Parameters.GetValue<List<DuplicateRecord>>(DuplicatesDialogViewModel.OutputDpDuplicates);
                     foreach (var record in records)
                     {
                         var isFirst = true;

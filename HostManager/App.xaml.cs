@@ -1,5 +1,4 @@
-﻿using HandyControl.Data;
-using Prism.Ioc;
+﻿using Prism.Ioc;
 using Prism.Mvvm;
 using Prism.Unity;
 using System.Globalization;
@@ -28,13 +27,15 @@ namespace HostManager
 
         protected override void RegisterTypes(IContainerRegistry containerRegistry)
         {
-            containerRegistry.RegisterSingleton<Services.FileSystemService, Services.FileSystemService>();
+            containerRegistry.RegisterSingleton<Services.AsnProviderService, Services.AsnProviderService>();
             containerRegistry.RegisterSingleton<Services.DnsResolverService, Services.DnsResolverService>();
+            containerRegistry.RegisterSingleton<Services.FileSystemService, Services.FileSystemService>();
 
             containerRegistry.RegisterDialog<Views.DuplicatesDialog, ViewModels.DuplicatesDialogViewModel>();
             containerRegistry.RegisterDialog<Views.EditRecordDialog, ViewModels.EditRecordDialogViewModel>();
             containerRegistry.RegisterDialog<Views.AddMultipleRecordsDialog, ViewModels.AddMultipleRecordsDialogViewModel>();
             containerRegistry.RegisterDialog<Views.ConfigurationDialog, ViewModels.ConfigurationDialogViewModel>();
+            containerRegistry.RegisterDialog<Views.RoutesListDialog, ViewModels.RoutesListDialogViewModel>();
 
             ViewModelLocationProvider.Register(typeof(Views.ShellWindow).ToString(), typeof(ViewModels.ShellWindowViewModel));
         }
