@@ -10,7 +10,19 @@ namespace HostManager.JsonConverter
         public override DateTime Read(
             ref Utf8JsonReader reader,
             Type typeToConvert,
-            JsonSerializerOptions options) => DateTime.Parse(reader.GetString()!, CultureInfo.InvariantCulture);
+            JsonSerializerOptions options)
+        {
+            if (DateTime.TryParseExact(reader.GetString()!, "yyyy-MM-dd",
+                    CultureInfo.InvariantCulture, DateTimeStyles.AssumeLocal, out var dt))
+                return dt;
+            if (DateTime.TryParseExact(reader.GetString()!, "yyyyMMdd",
+                    CultureInfo.InvariantCulture, DateTimeStyles.AssumeLocal, out dt))
+                return dt;
+            if (DateTime.TryParse(reader.GetString()!, CultureInfo.InvariantCulture,
+                    DateTimeStyles.AssumeLocal, out dt))
+                return dt;
+            return new DateTime();
+        }
 
         public override void Write(
             Utf8JsonWriter writer,
