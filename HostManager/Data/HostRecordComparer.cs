@@ -53,7 +53,7 @@ namespace HostManager.Data
             }
         }
 
-        public int CompareByAddress(HostRecord x, HostRecord y)
+        public static int CompareByAddress(HostRecord x, HostRecord y)
         {
             var result = x.Address.AddressFamily.CompareTo(y.Address.AddressFamily);
             if (result != 0)
@@ -73,7 +73,7 @@ namespace HostManager.Data
             return 0;
         }
 
-        public int CompareByHost(HostRecord x, HostRecord y)
+        public static int CompareByHost(HostRecord x, HostRecord y)
         {
             var xValue = x.Host.ToLower();
             var yValue = y.Host.ToLower();
@@ -89,18 +89,24 @@ namespace HostManager.Data
 
         private static int CompareDomains(string[] x, string[] y, int depth)
         {
-            var xOffset = x.Length - depth - 1;
-            var yOffset = y.Length - depth - 1;
+            while (true)
+            {
+                var xOffset = x.Length - depth - 1;
+                var yOffset = y.Length - depth - 1;
 
-            if (xOffset >= 0 && yOffset < 0)
-                return 1;
+                if (xOffset >= 0 && yOffset < 0) return 1;
 
-            if (yOffset >= 0 && xOffset < 0)
-                return -1;
+                if (yOffset >= 0 && xOffset < 0) return -1;
 
-            return x[xOffset].CompareTo(y[yOffset]) == 0
-                ? CompareDomains(x, y, depth + 1)
-                : x[xOffset].CompareTo(y[yOffset]);
+                var cmp = string.Compare(x[xOffset], y[yOffset], StringComparison.Ordinal);
+                if (cmp == 0)
+                {
+                    depth += 1;
+                    continue;
+                }
+
+                return cmp;
+            }
         }
         #endregion
 
