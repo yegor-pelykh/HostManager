@@ -68,9 +68,7 @@ namespace HostManager.Services
             return Task.Run(() =>
             {
                 var networks = new Dictionary<string, SortedSet<IPNetwork>>();
-                var failedHosts = new SortedSet<HostRecord>(
-                    new SortedSet<HostRecord>(new HostRecordComparer(nameof(HostRecord.Host),
-                        ListSortDirection.Ascending)));
+                var failedHosts = new SortedSet<HostRecord>(new HostRecordComparer(nameof(HostRecord.Host)));
                 var i = 0;
                 foreach (var hostRecord in hostRecords)
                 {
