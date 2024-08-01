@@ -6,14 +6,14 @@ using System.Text.Json.Serialization;
 
 namespace HostManager.JsonConverter
 {
-    internal class IpNetworkCollectionJsonConverter : JsonConverter<IEnumerable<IPNetwork>>
+    internal class IpNetworkCollectionJsonConverter : JsonConverter<IEnumerable<IPNetwork2>>
     {
-        public override IEnumerable<IPNetwork> Read(
+        public override IEnumerable<IPNetwork2> Read(
             ref Utf8JsonReader reader,
             Type typeToConvert,
             JsonSerializerOptions options)
         {
-            List<IPNetwork> items = new();
+            List<IPNetwork2> items = new();
 
             if (reader.TokenType != JsonTokenType.StartArray)
                 return items;
@@ -24,7 +24,7 @@ namespace HostManager.JsonConverter
                     break;
 
                 var str = reader.GetString();
-                var network = IPNetwork.Parse(str);
+                var network = IPNetwork2.Parse(str);
                 items.Add(network);
             }
 
@@ -33,7 +33,7 @@ namespace HostManager.JsonConverter
 
         public override void Write(
             Utf8JsonWriter writer,
-            IEnumerable<IPNetwork> ipNetworkCollectionValue,
+            IEnumerable<IPNetwork2> ipNetworkCollectionValue,
             JsonSerializerOptions options)
         {
             writer.WriteStartArray();

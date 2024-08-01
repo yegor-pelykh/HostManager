@@ -2,11 +2,11 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
 using System.IO.Compression;
 using System.Linq;
+using System.Net;
 using System.Net.Sockets;
 using System.Text.Json;
 using HostManager.Data;
@@ -62,12 +62,12 @@ namespace HostManager.Services
             });
         }
 
-        internal Task<Dictionary<string, SortedSet<IPNetwork>>> GetNetworksAsync(IList<HostRecord> hostRecords,
+        internal Task<Dictionary<string, SortedSet<IPNetwork2>>> GetNetworksAsync(IList<HostRecord> hostRecords,
             List<AsnRecord> asnRecords, IProgress<Tuple<int, int, SortedSet<HostRecord>>> progress = null)
         {
             return Task.Run(() =>
             {
-                var networks = new Dictionary<string, SortedSet<IPNetwork>>();
+                var networks = new Dictionary<string, SortedSet<IPNetwork2>>();
                 var failedHosts = new SortedSet<HostRecord>(new HostRecordComparer(nameof(HostRecord.Host)));
                 var i = 0;
                 foreach (var hostRecord in hostRecords)
@@ -79,7 +79,7 @@ namespace HostManager.Services
                         if (networks.TryGetValue(asnId, out var existingNetworks))
                             existingNetworks.Add(network);
                         else
-                            networks.Add(asnId, new SortedSet<IPNetwork>
+                            networks.Add(asnId, new SortedSet<IPNetwork2>
                             {
                                 network
                             });
@@ -94,7 +94,7 @@ namespace HostManager.Services
             });
         }
 
-        internal static IPNetwork FindNetwork(List<AsnRecord> asnRecords, IPAddress address, out AsnRecord record)
+        internal static IPNetwork2 FindNetwork(List<AsnRecord> asnRecords, IPAddress address, out AsnRecord record)
         {
             record = null;
             foreach (var asnRecord in asnRecords)

@@ -40,7 +40,7 @@ namespace HostManager.ViewModels
         #region Properties
         public string Title => "String.RoutesListDialogTitle".GetLocalized();
 
-        public Dictionary<string, SortedSet<IPNetwork>> Networks
+        public Dictionary<string, SortedSet<IPNetwork2>> Networks
         {
             get => _networks;
             private set
@@ -129,7 +129,7 @@ namespace HostManager.ViewModels
 
         public void OnDialogOpened(IDialogParameters parameters)
         {
-            Networks = parameters.GetValue<Dictionary<string, SortedSet<IPNetwork>>>(InputDpNetworks);
+            Networks = parameters.GetValue<Dictionary<string, SortedSet<IPNetwork2>>>(InputDpNetworks);
             FailedHosts = parameters.GetValue<SortedSet<HostRecord>>(InputDpFailedHosts);
         }
 
@@ -257,7 +257,7 @@ namespace HostManager.ViewModels
         #endregion
 
         #region Fields
-        private Dictionary<string, SortedSet<IPNetwork>> _networks;
+        private Dictionary<string, SortedSet<IPNetwork2>> _networks;
         private SortedSet<HostRecord> _failedHosts;
         private RoutesFormat _routesFormat;
         private bool _isFormatNetworkCidr;

@@ -39,10 +39,10 @@ namespace HostManager.Data
         public bool Active { get; set; }
         [JsonPropertyName("prefixes")]
         [JsonConverter(typeof(IpNetworkCollectionJsonConverter))]
-        public IEnumerable<IPNetwork> NetworksV4 { get; set; }
+        public IEnumerable<IPNetwork2> NetworksV4 { get; set; }
         [JsonPropertyName("prefixesIPv6")]
         [JsonConverter(typeof(IpNetworkCollectionJsonConverter))]
-        public IEnumerable<IPNetwork> NetworksV6 { get; set; }
+        public IEnumerable<IPNetwork2> NetworksV6 { get; set; }
         #endregion
 
         #region ToString() implementation
