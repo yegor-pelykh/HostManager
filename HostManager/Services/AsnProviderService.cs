@@ -1,118 +1,203 @@
 ﻿using System.IO;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Net.Http;
 using System.Threading.Tasks;
 using System.IO.Compression;
 using System.Linq;
 using System.Net;
-using System.Net.Sockets;
-using System.Text.Json;
 using HostManager.Data;
+using System.Text.Json;
 
 namespace HostManager.Services
 {
     internal class AsnProviderService
     {
         #region Methods
-        internal async Task<string> DownloadFileAsync(string uri, string fileName)
+        internal async Task<string> GetAsnDatabaseFilePathAsync()
         {
-            try
+            string appRoot = AppDomain.CurrentDomain.BaseDirectory;
+            string asnDirectory = Path.Combine(appRoot, "asn");
+            Directory.CreateDirectory(asnDirectory);
+
+            string zipFileName = "asn_ipv4_small.json.zip";
+            string jsonFileName = "asn_ipv4_small.json";
+            string zipFilePath = Path.Combine(asnDirectory, zipFileName);
+            string jsonFilePath = Path.Combine(asnDirectory, jsonFileName);
+
+            DateTime today = DateTime.Today;
+            FileInfo zipFileInfo = new FileInfo(zipFilePath);
+            FileInfo jsonFileInfo = new FileInfo(jsonFilePath);
+
+            bool needsDownload = true;
+
+            if (zipFileInfo.Exists && jsonFileInfo.Exists)
             {
-                await using var ns = await _httpClient.GetStreamAsync(uri);
-                using var zip = new ZipArchive(ns, ZipArchiveMode.Read);
-                var file = zip.Entries.FirstOrDefault(e =>
-                    string.Compare(e.Name, fileName, StringComparison.InvariantCultureIgnoreCase) == 0);
-                if (file != null)
+                if (zipFileInfo.LastWriteTime.Date == today.Date)
                 {
-                    using var unzip = new StreamReader(file.Open());
-                    var lines = new List<string>();
-                    return await unzip.ReadToEndAsync();
+                    needsDownload = false;
                 }
             }
-            catch (Exception e)
+
+            if (needsDownload)
             {
-                // ignored
+                try
+                {
+                    using (var response = await _httpClient.GetAsync("https://geoip.oxl.app/file/asn_ipv4_small.json.zip", HttpCompletionOption.ResponseHeadersRead))
+                    {
+                        response.EnsureSuccessStatusCode();
+                        using (var fileStream = new FileStream(zipFilePath, FileMode.Create, FileAccess.Write, FileShare.None, 4096, useAsync: true))
+                        using (var stream = await response.Content.ReadAsStreamAsync())
+                        {
+                            await stream.CopyToAsync(fileStream);
+                        }
+                    }
+
+                    await Task.Run(() =>
+                    {
+                        using (ZipArchive archive = ZipFile.OpenRead(zipFilePath))
+                        {
+                            var entry = archive.Entries.FirstOrDefault(e => e.Name.Equals(jsonFileName, StringComparison.OrdinalIgnoreCase));
+                            if (entry != null)
+                            {
+                                entry.ExtractToFile(jsonFilePath, true);
+                            }
+                            else
+                            {
+                                throw new InvalidDataException($"JSON file '{jsonFileName}' not found in the downloaded zip archive.");
+                            }
+                        }
+                    });
+                }
+                catch (Exception)
+                {
+                    return null;
+                }
             }
 
+            if (File.Exists(jsonFilePath))
+            {
+                return jsonFilePath;
+            }
             return null;
         }
 
-        internal Task<List<AsnRecord>> GetAsnRecordsAsync(string jsonString)
-        {
-            return Task.Run(() =>
-            {
-                var records = new List<AsnRecord>();
-                var jsonDoc = JsonDocument.Parse(jsonString);
-                var root = jsonDoc.RootElement;
-                foreach (var rootChild in root.EnumerateObject())
-                {
-                    try
-                    {
-                        var record = rootChild.Value.Deserialize<AsnRecord>();
-                        records.Add(record);
-                    }
-                    catch (Exception)
-                    {
-                        // ignored
-                    }
-                }
-                return records;
-            });
-        }
+        private static List<IpAsnEntry> _allIpAsnEntriesCache;
+        private static readonly object _cacheLock = new object();
 
-        internal Task<Dictionary<string, SortedSet<IPNetwork2>>> GetNetworksAsync(IList<HostRecord> hostRecords,
-            List<AsnRecord> asnRecords, IProgress<Tuple<int, int, SortedSet<HostRecord>>> progress = null)
+        internal async Task<Dictionary<string, SortedSet<IPNetwork2>>> GetNetworksAsync(IList<HostRecord> hostRecords,
+            string jsonFilePath, IProgress<Tuple<int, int, SortedSet<HostRecord>>> progress = null)
         {
-            return Task.Run(() =>
+            var networks = new Dictionary<string, SortedSet<IPNetwork2>>();
+            var failedHosts = new SortedSet<HostRecord>(new HostRecordComparer(nameof(HostRecord.Host)));
+
+            if (string.IsNullOrEmpty(jsonFilePath) || !File.Exists(jsonFilePath))
             {
-                var networks = new Dictionary<string, SortedSet<IPNetwork2>>();
-                var failedHosts = new SortedSet<HostRecord>(new HostRecordComparer(nameof(HostRecord.Host)));
-                var i = 0;
+                int i = 0;
                 foreach (var hostRecord in hostRecords)
                 {
-                    var network = FindNetwork(asnRecords, hostRecord.Address, out var asnRecord);
-                    if (network != null)
-                    {
-                        var asnId = $"{asnRecord.OrgName} ({asnRecord.CountryCode})";
-                        if (networks.TryGetValue(asnId, out var existingNetworks))
-                            existingNetworks.Add(network);
-                        else
-                            networks.Add(asnId, new SortedSet<IPNetwork2>
-                            {
-                                network
-                            });
-                    }
-                    else
-                        failedHosts.Add(hostRecord);
-
+                    failedHosts.Add(hostRecord);
                     progress?.Report(new Tuple<int, int, SortedSet<HostRecord>>(i++, networks.Count, failedHosts));
                 }
-                
                 return networks;
-            });
-        }
-
-        internal static IPNetwork2 FindNetwork(List<AsnRecord> asnRecords, IPAddress address, out AsnRecord record)
-        {
-            record = null;
-            foreach (var asnRecord in asnRecords)
-            {
-                var networks = address.AddressFamily == AddressFamily.InterNetworkV6
-                    ? asnRecord.NetworksV6
-                    : asnRecord.NetworksV4;
-                if (networks == null)
-                    continue;
-
-                var network = networks.FirstOrDefault(n => n.Contains(address));
-                if (network == null)
-                    continue;
-
-                record = asnRecord;
-                return network;
             }
-            return null;
+
+            if (_allIpAsnEntriesCache == null)
+            {
+                List<IpAsnEntry> computedAsnEntries = null;
+                computedAsnEntries = await Task.Run(async () =>
+                {
+                    var jsonContent = await File.ReadAllTextAsync(jsonFilePath);
+                    var oxlAsnDatabase = JsonSerializer.Deserialize<OxlAsnDatabase>(jsonContent);
+
+                    var ipAsnEntries = new List<IpAsnEntry>();
+                    foreach (var asnEntryKvp in oxlAsnDatabase)
+                    {
+                        if (!long.TryParse(asnEntryKvp.Key, out long asnNumber))
+                            continue;
+
+                        var entry = asnEntryKvp.Value;
+                        string orgName = entry.Organization?.Name ?? entry.Info?.Name ?? "Unknown Organization";
+                        string countryCode = entry.Info?.Country ?? "ZZ";
+
+                        foreach (var ipv4Cidr in entry.Ipv4)
+                        {
+                            if (IPNetwork2.TryParse(ipv4Cidr, out var network))
+                            {
+                                ipAsnEntries.Add(new IpAsnEntry
+                                {
+                                    Network = network,
+                                    AsnNumber = asnNumber,
+                                    OrgName = orgName,
+                                    CountryCode = countryCode
+                                });
+                            }
+                        }
+                    }
+                    ipAsnEntries.Sort(new IpAsnEntry.NetworkComparer());
+                    return ipAsnEntries;
+                });
+
+                lock (_cacheLock)
+                {
+                    if (_allIpAsnEntriesCache == null)
+                    {
+                        _allIpAsnEntriesCache = computedAsnEntries;
+                    }
+                }
+            }
+
+            var resultTuple = await Task.Run(() =>
+            {
+                var localNetworks = new Dictionary<string, SortedSet<IPNetwork2>>();
+                var localFailedHosts = new SortedSet<HostRecord>(new HostRecordComparer(nameof(HostRecord.Host)));
+                int currentHostIndex = 0;
+
+                foreach (var hostRecord in hostRecords)
+                {
+                    IpAsnEntry foundAsnEntry = null;
+
+                    int approxIndex = _allIpAsnEntriesCache.BinarySearch(
+                        new IpAsnEntry { Network = IPNetwork2.Parse($"{hostRecord.Address}/32") },
+                        new IpAsnEntry.NetworkComparer());
+
+                    if (approxIndex < 0)
+                    {
+                        approxIndex = ~approxIndex;
+                    }
+
+                    for (int k = Math.Min(approxIndex, _allIpAsnEntriesCache.Count - 1); k >= 0; k--)
+                    {
+                        var entry = _allIpAsnEntriesCache[k];
+                        if (entry.Network.Contains(hostRecord.Address))
+                        {
+                            foundAsnEntry = entry;
+                            break;
+                        }
+                    }
+
+                    if (foundAsnEntry != null)
+                    {
+                        string asnId = $"{foundAsnEntry.AsnNumber} - {foundAsnEntry.OrgName} ({foundAsnEntry.CountryCode})";
+                        if (localNetworks.TryGetValue(asnId, out var existingNetworks))
+                            existingNetworks.Add(foundAsnEntry.Network);
+                        else
+                            localNetworks.Add(asnId, new SortedSet<IPNetwork2> { foundAsnEntry.Network });
+                    }
+                    else
+                    {
+                        localFailedHosts.Add(hostRecord);
+                    }
+
+                    progress?.Report(new Tuple<int, int, SortedSet<HostRecord>>(currentHostIndex++, localNetworks.Count, localFailedHosts));
+                }
+                return Tuple.Create(localNetworks, localFailedHosts);
+            });
+
+            networks = resultTuple.Item1;
+            failedHosts = resultTuple.Item2;
+
+            return networks;
         }
         #endregion
 

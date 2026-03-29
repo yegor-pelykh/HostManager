@@ -55,8 +55,11 @@
     <system:String x:Key="String.MsgCaptionCreateRoutesList">Create routes list</system:String>
     <system:String x:Key="String.MsgCreateRoutesListLoadingDatabase">Loading the ASN database...</system:String>
     <system:String x:Key="String.MsgCreateRoutesListProcessingDatabase">Processing the ASN database...</system:String>
-    <system:String x:Key="String.MsgCreateRoutesListCreatingList">Compiling a list of subnets...</system:String>
     <system:String x:Key="String.MsgCreateRoutesListSearchingSubnets">Iterating over hosts: {0} out of {1} (subnets found: {2})...</system:String>
     <system:String x:Key="String.MsgCreateRoutesListFailedHostsTitle">Hosts for which no subnets were found:</system:String>
+    <system:String x:Key="String.MsgLocalizationFailedApp">An error occurred while preparing the localization.&#x0A;The app will not load.</system:String>
+    <system:String x:Key="String.ErrorCaption">Error</system:String>
+    <system:String x:Key="String.MsgAsnDatabaseFailed">Failed to get ASN database file.</system:String>
+    <system:String x:Key="String.AppTitle">HostManager</system:String>
 
 </ResourceDictionary>

@@ -9,7 +9,7 @@ namespace HostManager.Data
     internal class AsnRecord
     {
         public AsnRecord() { }
-        
+
         #region Properties
         [JsonPropertyName("asn")]
         [JsonConverter(typeof(LongJsonConverter))]

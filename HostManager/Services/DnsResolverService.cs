@@ -64,7 +64,7 @@ namespace HostManager.Services
                             break;
                         }
                     }
-                    catch (Exception e)
+                    catch (Exception)
                     {
                         // ignored
                     }

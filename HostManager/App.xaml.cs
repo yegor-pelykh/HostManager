@@ -14,8 +14,8 @@ namespace HostManager
             if (!SetLocalization())
             {
                 MessageBox.Show(
-                    MsgLocalizationFailed,
-                    MsgErrorCaption,
+                    L10n.Localization.GetLocalized("String.MsgLocalizationFailedApp"),
+                    L10n.Localization.GetLocalized("String.ErrorCaption"),
                     MessageBoxButton.OK,
                     MessageBoxImage.Error
                     );
@@ -58,8 +58,6 @@ namespace HostManager
         #endregion
 
         #region Constants
-        private const string MsgLocalizationFailed = "An error occurred while preparing the localization.\nThe app will not load.";
-        private const string MsgErrorCaption = "Error";
         private const string DefaultLanguageCode = "EN";
         #endregion
 

@@ -48,7 +48,7 @@ namespace HostManager.ViewModels
 
         #region Properties
         private DnsResolverService DnsResolverService { get; }
-        
+
         private AsnProviderService AsnProviderService { get; }
 
         public ObservableCollection<HostRecord> Hosts
@@ -121,7 +121,7 @@ namespace HostManager.ViewModels
                     Hosts.AddRange(hosts);
                     Hosts.Sort(new HostRecordComparer(nameof(HostRecord.Host), ListSortDirection.Ascending));
                 }
-                
+
                 RemoveDuplicates(Hosts);
             }
             catch
@@ -179,7 +179,7 @@ namespace HostManager.ViewModels
             var editableRecord = parameter is HostRecord
                 ? (HostRecord)parameter
                 : SelectedHost;
-            
+
             if (editableRecord == null)
                 return;
 
@@ -254,7 +254,7 @@ namespace HostManager.ViewModels
                 .ToArray();
 
             var progressMessageMask = L10n.Localization.GetLocalized("String.MsgUpdateAllHostsProgress");
-            var progress = new Progress<Tuple<int, int>>(data  =>
+            var progress = new Progress<Tuple<int, int>>(data =>
             {
                 StatusBarText = string.Format(progressMessageMask, data.Item1 + 1, hostNames.Length, data.Item2);
             });
@@ -275,7 +275,7 @@ namespace HostManager.ViewModels
             }
 
             StatusBarText = null;
-            
+
             if (failedHostsCount > 0)
             {
                 MessageBox.Show(
@@ -311,18 +311,19 @@ namespace HostManager.ViewModels
 
             StatusBarText = L10n.Localization.GetLocalized("String.MsgCreateRoutesListLoadingDatabase");
 
-            const string databaseFileName = "fullASN.json";
-            var jsonString = await AsnProviderService.DownloadFileAsync($"https://ipapi.is/data/{databaseFileName}.zip", databaseFileName);
-            if (jsonString == null)
+            var mmdbFilePath = await AsnProviderService.GetAsnDatabaseFilePathAsync();
+            if (string.IsNullOrEmpty(mmdbFilePath))
+            {
+                StatusBarText = null;
+                MessageBox.Show(
+                    L10n.Localization.GetLocalized("String.MsgAsnDatabaseFailed"),
+                    L10n.Localization.GetLocalized("String.ErrorCaption"),
+                    MessageBoxButton.OK,
+                    MessageBoxImage.Error);
                 return;
+            }
 
             StatusBarText = L10n.Localization.GetLocalized("String.MsgCreateRoutesListProcessingDatabase");
-
-            var asnRecords = await AsnProviderService.GetAsnRecordsAsync(jsonString);
-            if (asnRecords == null)
-                return;
-
-            StatusBarText = L10n.Localization.GetLocalized("String.MsgCreateRoutesListCreatingList");
 
             SortedSet<HostRecord> failedHosts = null;
             var progress = new Progress<Tuple<int, int, SortedSet<HostRecord>>>(data =>
@@ -332,9 +333,12 @@ namespace HostManager.ViewModels
                     L10n.Localization.GetLocalized("String.MsgCreateRoutesListSearchingSubnets"),
                     data.Item1 + 1, Hosts.Count, data.Item2);
             });
-            var networks = await AsnProviderService.GetNetworksAsync(Hosts, asnRecords, progress);
+            var networks = await AsnProviderService.GetNetworksAsync(Hosts, mmdbFilePath, progress);
             if (networks == null)
+            {
+                StatusBarText = null;
                 return;
+            }
 
             StatusBarText = null;
 
@@ -383,7 +387,7 @@ namespace HostManager.ViewModels
 
                             if (!isFirst)
                                 return true;
-                            
+
                             isFirst = false;
                             return false;
                         });

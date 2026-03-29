@@ -13,7 +13,7 @@
         Style="{StaticResource {x:Type Window}}"
         WindowStartupLocation="CenterScreen"
         Height="700" Width="850"
-        Title="HostManager">
+        Title="{DynamicResource String.AppTitle}">
     <Window.Resources>
         <CollectionViewSource x:Key="HostsSource" Source="{Binding Hosts}">
             <CollectionViewSource.GroupDescriptions>

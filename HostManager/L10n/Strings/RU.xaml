@@ -55,8 +55,11 @@
     <system:String x:Key="String.MsgCaptionCreateRoutesList">Создать список подсетей</system:String>
     <system:String x:Key="String.MsgCreateRoutesListLoadingDatabase">Загрузка базы данных ASN...</system:String>
     <system:String x:Key="String.MsgCreateRoutesListProcessingDatabase">Обработка базы данных ASN...</system:String>
-    <system:String x:Key="String.MsgCreateRoutesListCreatingList">Составление списка подсетей...</system:String>
     <system:String x:Key="String.MsgCreateRoutesListSearchingSubnets">Перебор узлов: {0} из {1} (найдено подсетей {2})...</system:String>
     <system:String x:Key="String.MsgCreateRoutesListFailedHostsTitle">Узлы, для которых не найдены подсети:</system:String>
+    <system:String x:Key="String.MsgLocalizationFailedApp">Произошла ошибка при подготовке локализации.&#x0A;Приложение не будет загружено.</system:String>
+    <system:String x:Key="String.ErrorCaption">Ошибка</system:String>
+    <system:String x:Key="String.MsgAsnDatabaseFailed">Не удалось получить файл базы данных ASN.</system:String>
+    <system:String x:Key="String.AppTitle">HostManager</system:String>
 
 </ResourceDictionary>
